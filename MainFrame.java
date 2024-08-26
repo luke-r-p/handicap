@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 
 /**
  * Frame containing the whole user interface
@@ -51,6 +52,78 @@ public class MainFrame extends JFrame {
   public void setOutput(String left, String right) {
     leftText.setText(left);
     rightText.setText(right);
+  }
+
+  /**
+   * Adds a listener to the start button
+   * @param listener ActionListener to add to the button
+   */
+  public void addListener(ActionListener listener) {
+    startButton.addActionListener(listener);
+  }
+
+  /**
+   * Gets the course index
+   * @return a double of the course index
+   */
+  public double getIndex() {
+    String strA = fields[0].getText();
+    String strB = fields[1].getText();
+
+    double numA = Double.parseDouble(strA);
+    double numB = Double.parseDouble(strB);
+
+    return numA/numB;
+  }
+
+  /**
+   * Gets the course rating
+   * @return a double of the course rating
+   */
+  public double getRating() {
+    String str = fields[2].getText();
+    double num = Double.parseDouble(str);
+    return num;
+  }
+
+  /**
+   * Gets the course par
+   * @return an int of the course par
+   */
+  public int getPar() {
+    String str = fields[3].getText();
+    int num = Integer.parseInt(str);
+    return num;
+  }
+
+  /**
+   * Gets the starting value of the table
+   * @return a double of the start value
+   */
+  public double getStart() {
+    String str = fields[4].getText();
+    double num = Double.parseDouble(str);
+    return num;
+  }
+
+  /**
+   * Gets the maximum value of the table
+   * @return a double of the stop value
+   */
+  public double getStop() {
+    String str = fields[5].getText();
+    double num = Double.parseDouble(str);
+    return num;
+  }
+
+  /**
+   * Gets the step value of the table
+   * @return a double of the step value
+   */
+  public double getStep() {
+    String str = fields[6].getText();
+    double num = Double.parseDouble(str);
+    return num;
   }
 
   // creates the input panel and populates labels[] and fields[]
