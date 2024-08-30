@@ -1,5 +1,6 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.*;
 
 /**
  * Class for taking the inputs and producing the table
@@ -28,6 +29,46 @@ public class Calculator implements ActionListener {
     stop = mf.getStop();
     step = mf.getStep();
 
-    mf.setOutput("To", "Do");
+    String leftString = "";
+    String rightString = "";
+
+    // creates BigDecimal values for calculations
+    BigDecimal handicap = BigDecimal.valueOf(start); // current handicap being calculated
+    BigDecimal currentLower = BigDecimal.valueOf(start); // current lower value in range
+    BigDecimal bigStep = BigDecimal.valueOf(step); // the step between handicaps
+    int currentValue = calculateValue(handicap); // current range's value
+
+    while (handicap.doubleValue() <= stop) {
+      int newValue = calculateValue(handicap);
+
+      // checks to see if the value has changed
+      if (newValue > currentValue) {
+        // appends strings with new ranges
+        String newLine = currentLower + " to " + handicap.subtract(bigStep) + "\n";
+        leftString = leftString + newLine;
+        rightString = rightString + currentValue + "\n";
+
+        // starts the next range of handicaps
+        currentLower = handicap;
+        currentValue = newValue;
+      }
+
+      // iterates to next handicap
+      handicap = handicap.add(bigStep);
+    }
+
+    // appends final range
+    String newLine = currentLower + " to " + handicap.subtract(bigStep) + "\n";
+    leftString = leftString + newLine;
+    rightString = rightString + currentValue + "\n";
+
+    // sets the output of the mainframe
+    mf.setOutput(leftString, rightString);
+  }
+
+  // calculates the value based on the handicap
+  private int calculateValue(BigDecimal handicap) {
+    BigDecimal courseFull = (handicap.multiply(BigDecimal.valueOf(index), new MathContext(5))).add(BigDecimal.valueOf(rating - par));
+    return courseFull.round(new MathContext(0)).intValue();
   }
 }
