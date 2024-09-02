@@ -30,6 +30,8 @@ public class Calculator implements ActionListener {
     stop = mf.getStop();
     step = mf.getStep();
 
+    System.out.println(index + " " + rating + " " + par);
+
     if (e.getActionCommand().equalsIgnoreCase("Course")) {
       player = false;
     }
@@ -77,12 +79,13 @@ public class Calculator implements ActionListener {
   // calculates the value based on the handicap
   private int calculateValue(BigDecimal handicap) {
     BigDecimal courseFull = (handicap.multiply(BigDecimal.valueOf(index), new MathContext(5))).add(BigDecimal.valueOf(rating - par));
-    
+    System.out.println(courseFull);
+
     // multiplies by 0.95 if it is the player handicaps
     if (player) {
       courseFull = courseFull.multiply(BigDecimal.valueOf(0.95));
     }
 
-    return courseFull.round(new MathContext(0)).intValue();
+    return courseFull.setScale(0, RoundingMode.HALF_UP).intValue();
   }
 }
