@@ -1,11 +1,13 @@
 import javax.swing.*;
 import java.awt.GridLayout;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.awt.event.ActionListener;
 
 /**
  * Frame containing the whole user interface
  */
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame implements AdjustmentListener {
   private int fieldNum = 7; // number of fields
 
   private JPanel mainPanel;
@@ -16,6 +18,8 @@ public class MainFrame extends JFrame {
   private JTextField[] fields; // input fields
   private JButton courseButton; // button to calculate course table
   private JButton playerButton; // button to calculate player table
+  private JScrollPane leftScroll; // scrollpane for the left text
+  private JScrollPane rightScroll; // scrollpane for the right text
 
   /**
    * Constructor for the mainframe
@@ -30,14 +34,22 @@ public class MainFrame extends JFrame {
     leftText.setEditable(false);
     rightText.setEditable(false);
 
+    // scrollpanes for the text
+    leftScroll = new JScrollPane(leftText, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+    rightScroll = new JScrollPane(rightText, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+    // adds this class as a listener to the scroll bars
+    leftScroll.getVerticalScrollBar().addAdjustmentListener(this);
+    rightScroll.getVerticalScrollBar().addAdjustmentListener(this);
+
     this.add(mainPanel);
 
     mainPanel.setLayout(new GridLayout(1,3, 5, 5)); // sets the main panel to the grid layout
     inputPanel.setLayout(new GridLayout(9,2, 3, 3)); // sets the input panel to the grid layout
 
     mainPanel.add(inputPanel);
-    mainPanel.add(leftText);
-    mainPanel.add(rightText);
+    mainPanel.add(leftScroll);
+    mainPanel.add(rightScroll);
 
     createInput(inputPanel);
 
@@ -188,5 +200,16 @@ public class MainFrame extends JFrame {
     playerButton = new JButton("Player Handicaps");
     playerButton.setActionCommand("Player");
     inputPanel.add(playerButton);
+  }
+
+  @Override
+  public void adjustmentValueChanged(AdjustmentEvent e) {
+    // links the scrolling of the two text panes together
+    if (e.getSource().equals(leftScroll.getVerticalScrollBar())) {
+      rightScroll.getVerticalScrollBar().setValue(leftScroll.getVerticalScrollBar().getValue());
+    }
+    else {
+      leftScroll.getVerticalScrollBar().setValue(rightScroll.getVerticalScrollBar().getValue());
+    }
   }
 }
