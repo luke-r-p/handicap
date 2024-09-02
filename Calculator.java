@@ -12,6 +12,7 @@ public class Calculator implements ActionListener {
   private double start;
   private double stop;
   private double step;
+  private boolean player; // whether the table is for players
 
   private MainFrame mf;
 
@@ -28,6 +29,13 @@ public class Calculator implements ActionListener {
     start = mf.getStart();
     stop = mf.getStop();
     step = mf.getStep();
+
+    if (e.getActionCommand().equalsIgnoreCase("Course")) {
+      player = false;
+    }
+    else {
+      player = true;
+    }
 
     String leftString = "";
     String rightString = "";
@@ -69,6 +77,12 @@ public class Calculator implements ActionListener {
   // calculates the value based on the handicap
   private int calculateValue(BigDecimal handicap) {
     BigDecimal courseFull = (handicap.multiply(BigDecimal.valueOf(index), new MathContext(5))).add(BigDecimal.valueOf(rating - par));
+    
+    // multiplies by 0.95 if it is the player handicaps
+    if (player) {
+      courseFull = courseFull.multiply(BigDecimal.valueOf(0.95));
+    }
+
     return courseFull.round(new MathContext(0)).intValue();
   }
 }

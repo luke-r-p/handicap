@@ -14,7 +14,8 @@ public class MainFrame extends JFrame {
   private JTextArea rightText;
   private JLabel[] labels; // labels for input fields
   private JTextField[] fields; // input fields
-  private JButton startButton; // button to calculate table
+  private JButton courseButton; // button to calculate course table
+  private JButton playerButton; // button to calculate player table
 
   /**
    * Constructor for the mainframe
@@ -59,7 +60,8 @@ public class MainFrame extends JFrame {
    * @param listener ActionListener to add to the button
    */
   public void addListener(ActionListener listener) {
-    startButton.addActionListener(listener);
+    courseButton.addActionListener(listener);
+    playerButton.addActionListener(listener);
   }
 
   /**
@@ -178,9 +180,13 @@ public class MainFrame extends JFrame {
 
     inputPanel.add(new JPanel());
     inputPanel.add(new JPanel());
-    inputPanel.add(new JPanel());
 
-    startButton = new JButton("Calculate");
-    inputPanel.add(startButton);
+    courseButton = new JButton("Course Handicaps");
+    courseButton.setActionCommand("Course");
+    inputPanel.add(courseButton);
+
+    playerButton = new JButton("Player Handicaps");
+    playerButton.setActionCommand("Player");
+    inputPanel.add(playerButton);
   }
 }
